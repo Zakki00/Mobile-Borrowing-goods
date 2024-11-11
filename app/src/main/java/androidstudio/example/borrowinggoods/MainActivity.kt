@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ApiHelper
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,46 +27,80 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val sharedPref = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        val idAdmin = sharedPref.getString("idadmin", "ID Admin tidak ditemukan")
+        val namaAdmin = sharedPref.getString("nama_admin", "Nama Admin tidak ditemukan")
+        val username = sharedPref.getString("username", "Username tidak ditemukan")
+        val password = sharedPref.getString("password", "Password tidak ditemukan")
 
-        val text: TextView = findViewById(R.id.textView1)
-        val text2: TextView = findViewById(R.id.textView2)
 
-        fetchData(text)
+        val textView1: TextView = findViewById(R.id.textView1)
+        val taxtview2: TextView = findViewById(R.id.textView2)
+        val textView3: TextView = findViewById(R.id.textView3)
+        val textView4: TextView = findViewById(R.id.textView4)
+        val button1: TextView = findViewById(R.id.button1)
 
-
-
-    }
-
-    private fun fetchData(text: TextView) {
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = ApiHelper.getData("GET_barang.php")
-            if (response != null && response.isNotEmpty()) {
-                val jsonArray = JSONArray(response)
-                val stringBuilder = StringBuilder()
-
-                for (i in 0 until jsonArray.length()) {
-                    val item: JSONObject = jsonArray.getJSONObject(i)
-                    val idBarang = item.getString("idbarang")
-                    val namaBarang = item.getString("nama_barang")
-                    val jumlahBarang = item.getString("jumlah_barang")
-
-                    stringBuilder.append("ID Barang: $idBarang\n")
-                    stringBuilder.append("Nama Barang: $namaBarang\n")
-                    stringBuilder.append("Jumlah Barang: $jumlahBarang\n\n")
-                }
-
-                withContext(Dispatchers.Main) {
-                    text.text = stringBuilder.toString()
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    text.text = "Tidak ada data yang tersedia"
-                }
-            }
+        textView1.text = idAdmin
+        taxtview2.text = namaAdmin
+        textView3.text = username
+        textView4.text = password
+        button1.setOnClickListener {
+            logout()
         }
 
+
+        // Menampilkan data di TextView
+//        findViewById<TextView>(R.id.textView1).text = idAdmin
+//        findViewById<TextView>(R.id.textView2).text = namaAdmin
+//        findViewById<TextView>(R.id.textView3).text = username
+
     }
+    private fun logout() {
+        val sharedPref = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putBoolean("isLoggedIn", false)
+            putString("idadmin", null)
+            putString("nama_admin", null)
+            putString("username", null)
+            apply()
+        }
+        val intent = Intent(this, login::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+//    private fun fetchData(
+//        idTextView: TextView,
+//        namaTextView: TextView,
+//        jumlahTextView: TextView
+//    ) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val response = ApiHelper.getData("GET_barang.php")
+//            if (response != null && response.isNotEmpty()) {
+//                val jsonArray = JSONArray(response)
+//
+//                // Mengambil data pertama dari array JSON
+//                val firstItem: JSONObject = jsonArray.getJSONObject(0)
+//                val idBarang = firstItem.getString("idbarang")
+//                val namaBarang = firstItem.getString("nama_barang")
+//                val jumlahBarang = firstItem.getString("jumlah_barang")
+//
+//                withContext(Dispatchers.Main) {
+//                    // Menampilkan data pada TextView
+//                    idTextView.text = "ID Barang: $idBarang"
+//                    namaTextView.text = "Nama Barang: $namaBarang"
+//                    jumlahTextView.text = "Jumlah Barang: $jumlahBarang"
+//                }
+//            } else {
+//                withContext(Dispatchers.Main) {
+//                    // Menampilkan pesan jika data tidak tersedia
+//                    idTextView.text = "Tidak ada data ID"
+//                    namaTextView.text = "Tidak ada data Nama"
+//                    jumlahTextView.text = "Tidak ada data Jumlah"
+//                }
+//            }
+//        }
+//    }
 
 
 }
