@@ -35,7 +35,7 @@ class login : AppCompatActivity() {
             finish() // Mengakhiri activity login
             return
         }
-
+        val buttonsignup: Button = findViewById(R.id.button1)
         val buttonlogin: Button = findViewById(R.id.button2)
         val username: EditText = findViewById(R.id.editTextText)
         val password: EditText = findViewById(R.id.editTextTextPassword1)
@@ -45,6 +45,10 @@ class login : AppCompatActivity() {
             val passwordText = password.text.toString()
             loginUser(usernameText, passwordText)
         }
+        buttonsignup.setOnClickListener {
+            startActivity(Intent(this, Signup::class.java))
+        }
+
 
     }
 
@@ -60,6 +64,9 @@ class login : AppCompatActivity() {
                             val firstItem = jsonArray.getJSONObject(0)
                             val idAdmin = firstItem.optString("idadmin")
                             val namaAdmin = firstItem.optString("nama_admin")
+                            val tanggalLahir = firstItem.optString("tanggal_lahir")
+                            val username = firstItem.optString("username")
+                            val password = firstItem.optString("password")
 
                             // Menyimpan data login ke SharedPreferences
                             val sharedPref = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
@@ -67,6 +74,7 @@ class login : AppCompatActivity() {
                                 putBoolean("isLoggedIn", true)
                                 putString("idadmin", idAdmin)
                                 putString("nama_admin", namaAdmin)
+                                putString("tanggal_lahir", tanggalLahir)
                                 putString("username", username)
                                 putString("password", password)
                                 apply()

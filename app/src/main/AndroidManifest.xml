@@ -14,18 +14,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BorrowingGoods"
         tools:targetApi="31">
-
-        <!-- Tambahkan android:exported="true" pada LoginActivity -->
+        <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Signup"
+            android:exported="false" /> <!-- Tambahkan android:exported="true" pada LoginActivity -->
         <activity
             android:name=".login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- MainActivity tidak perlu intent-filter, cukup didefinisikan sebagai activity biasa -->
+        </activity> <!-- MainActivity tidak perlu intent-filter, cukup didefinisikan sebagai activity biasa -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
