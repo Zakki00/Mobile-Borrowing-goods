@@ -7,13 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ApiHelper
-import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,27 +30,21 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val sharedPref = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-        val nama = sharedPref.getString("nama_admin", "Nama Admin tidak ditemukan")
-        val username = sharedPref.getString("username", "Username tidak ditemukan")
 
-        val taxtview2: TextView = findViewById(R.id.textView2)
-        val textView3: TextView = findViewById(R.id.textView3)
-        val button2: Button = findViewById(R.id.button2)
-        taxtview2.text = "Selamat Datang " + nama
-        textView3.text = username
 
-        button2.setOnClickListener {
-         val intent = Intent(this, Profile::class.java).apply {
-             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-         }
-            startActivity(intent)
-            finish()
-        }
-
+//
+//        button2.setOnClickListener {
+//         val intent = Intent(this, Profile::class.java).apply {
+//             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//         }
+//            startActivity(intent)
+//            finish()
+//        }
+//        fetchData()
+//
 
     }
-    data class AdminData(
+    data class Data(
         val namaAdmin: String,
         val tanggalLahir: String,
         val username: String
@@ -65,20 +55,19 @@ class MainActivity : AppCompatActivity() {
 
             withContext(Dispatchers.Main) {
                 response?.let {
-                    val adminList = mutableListOf<AdminData>()
+                    val adminList = mutableListOf<Data>()
 
                     // Parsing JSON array response menjadi list AdminData
                     val jsonArray = JSONArray(response)
                     for (i in 0 until jsonArray.length()) {
                         val item = jsonArray.getJSONObject(i)
-                        val admin = AdminData(
+                        val admin = Data(
                             item.getString("nama_admin"),
                             item.getString("tanggal_lahir"),
                             item.getString("username")
                         )
                         adminList.add(admin)
                     }
-
                     // Pasang adapter di RecyclerView
                     val recyclerView: RecyclerView = findViewById(R.id.Recycleview1)
                     recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -91,12 +80,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Adapter AdminAdapter
-    inner class AdminAdapter(private val adminList: List<AdminData>) : RecyclerView.Adapter<AdminAdapter.AdminViewHolder>() {
+    inner class AdminAdapter(private val adminList: List<Data>) : RecyclerView.Adapter<AdminAdapter.AdminViewHolder>() {
 
         inner class AdminViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val namaAdmin: TextView = itemView.findViewById(R.id.textView1)
-            val tanggalLahir: TextView = itemView.findViewById(R.id.textView2)
-            val username: TextView = itemView.findViewById(R.id.textView3)
+            val tanggalLahir: TextView = itemView.findViewById(R.id.textView1)
+            val username: TextView = itemView.findViewById(R.id.textView2)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminViewHolder {
@@ -116,38 +105,38 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//    private fun fetchData(
-//        idTextView: TextView,
-//        namaTextView: TextView,
-//        jumlahTextView: TextView
-//    ) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val response = ApiHelper.getData("GET_barang.php")
-//            if (response != null && response.isNotEmpty()) {
-//                val jsonArray = JSONArray(response)
-//
-//                // Mengambil data pertama dari array JSON
-//                val firstItem: JSONObject = jsonArray.getJSONObject(0)
-//                val idBarang = firstItem.getString("idbarang")
-//                val namaBarang = firstItem.getString("nama_barang")
-//                val jumlahBarang = firstItem.getString("jumlah_barang")
-//
-//                withContext(Dispatchers.Main) {
-//                    // Menampilkan data pada TextView
-//                    idTextView.text = "ID Barang: $idBarang"
-//                    namaTextView.text = "Nama Barang: $namaBarang"
-//                    jumlahTextView.text = "Jumlah Barang: $jumlahBarang"
-//                }
-//            } else {
-//                withContext(Dispatchers.Main) {
-//                    // Menampilkan pesan jika data tidak tersedia
-//                    idTextView.text = "Tidak ada data ID"
-//                    namaTextView.text = "Tidak ada data Nama"
-//                    jumlahTextView.text = "Tidak ada data Jumlah"
-//                }
-//            }
-//        }
-//    }
+    private fun fetchData(
+        idTextView: TextView,
+        namaTextView: TextView,
+        jumlahTextView: TextView
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = ApiHelper.getData("GET_barang.php")
+            if (response != null && response.isNotEmpty()) {
+                val jsonArray = JSONArray(response)
+
+                // Mengambil data pertama dari array JSON
+                val firstItem: JSONObject = jsonArray.getJSONObject(0)
+                val idBarang = firstItem.getString("idbarang")
+                val namaBarang = firstItem.getString("nama_barang")
+                val jumlahBarang = firstItem.getString("jumlah_barang")
+
+                withContext(Dispatchers.Main) {
+                    // Menampilkan data pada TextView
+                    idTextView.text = "ID Barang: $idBarang"
+                    namaTextView.text = "Nama Barang: $namaBarang"
+                    jumlahTextView.text = "Jumlah Barang: $jumlahBarang"
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    // Menampilkan pesan jika data tidak tersedia
+                    idTextView.text = "Tidak ada data ID"
+                    namaTextView.text = "Tidak ada data Nama"
+                    jumlahTextView.text = "Tidak ada data Jumlah"
+                }
+            }
+        }
+    }
 
 
 }
