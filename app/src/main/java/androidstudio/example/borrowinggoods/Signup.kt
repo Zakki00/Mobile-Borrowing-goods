@@ -83,8 +83,9 @@ class Signup : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 if (url != null) {
                     Toast.makeText(this@Signup, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
-                    Intent(this@Signup, login::class.java)
-                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                 val intent =   Intent(this@Signup, login::class.java).apply {
+                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                 }
                     startActivity(intent)
                     // Arahkan ke halaman login atau halaman lainnya
                 } else {
@@ -106,8 +107,10 @@ class Signup : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 if (url != null) {
                     Toast.makeText(this@Signup, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
-                    val intent =  Intent(this@Signup, login::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    val intent =  Intent(this@Signup, login::class.java).apply {
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+
                     startActivity(intent)
 
                     // Arahkan ke halaman login atau halaman lainnya

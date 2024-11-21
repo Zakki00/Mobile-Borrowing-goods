@@ -21,8 +21,8 @@ class Profile : AppCompatActivity() {
             insets
         }
         val sharedPref = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-        val nama = sharedPref.getString("nama_admin", "Nama Admin tidak ditemukan")
-        val tanggal_lahir = sharedPref.getString("tanggal_lahir", "Username tidak ditemukan")
+        val nama = sharedPref.getString("nama_admin", "Nama  tidak ditemukan")
+        val tanggal_lahir = sharedPref.getString("tanggal_lahir", "tanggal lahir tidak ditemukan")
         val username = sharedPref.getString("username", "Username tidak ditemukan")
 
         findViewById<TextView>(R.id.textView1).text = "Selamat Datang " + nama
@@ -35,11 +35,20 @@ class Profile : AppCompatActivity() {
             logut()
         }
         button1.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            if (username == "Admin"){
+                val intent = Intent(this@Profile, Admin::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+                finish()
+            }else{
+                val intent = Intent(this@Profile, User::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+                finish()
             }
-            startActivity(intent)
-            finish()
+
         }
     }
     private fun logut(){

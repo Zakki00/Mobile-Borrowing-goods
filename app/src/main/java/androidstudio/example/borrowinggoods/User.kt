@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ApiHelper
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity() {
+class User : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,18 +31,18 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val button2 = findViewById<TextView>(R.id.button2)
 
 
-//
-//        button2.setOnClickListener {
-//         val intent = Intent(this, Profile::class.java).apply {
-//             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//         }
-//            startActivity(intent)
-//            finish()
-//        }
+
+        button2.setOnClickListener {
+         val intent = Intent(this, Profile::class.java).apply {
+             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+         }
+            startActivity(intent)
+        }
 //        fetchData()
-//
+luj\'v8rhi888888x7twhtttg^WWWwwwwwwww221`'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          h44h44444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444                                                                                                                                                             t                           $g6666666666666666Fsyuu
 
     }
     data class Data(
@@ -70,17 +71,29 @@ class MainActivity : AppCompatActivity() {
                     }
                     // Pasang adapter di RecyclerView
                     val recyclerView: RecyclerView = findViewById(R.id.Recycleview1)
-                    recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-                    recyclerView.adapter = AdminAdapter(adminList)
+                    recyclerView.layoutManager = LinearLayoutManager(this@User)
+                    recyclerView.adapter = AdminAdapter(adminList) { admin ->
+                        // Aksi ketika item diklik
+                        val intent = Intent(this@User, admin_detail::class.java).apply {
+                            putExtra("NAMA_ADMIN", admin.namaAdmin)
+                            putExtra("TANGGAL_LAHIR", admin.tanggalLahir)
+                            putExtra("USERNAME", admin.username)
+                        }
+                        startActivity(intent)
+                    }
                 } ?: run {
-                    Toast.makeText(this@MainActivity, "Gagal mengambil data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@User, "Gagal mengambil data", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
     }
 
     // Adapter AdminAdapter
-    inner class AdminAdapter(private val adminList: List<Data>) : RecyclerView.Adapter<AdminAdapter.AdminViewHolder>() {
+    inner class AdminAdapter(
+        private val adminList: List<Data>,
+        private val onItemClick: (Data) -> Unit
+    ) : RecyclerView.Adapter<AdminAdapter.AdminViewHolder>() {
 
         inner class AdminViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val namaAdmin: TextView = itemView.findViewById(R.id.textView1)
@@ -98,6 +111,11 @@ class MainActivity : AppCompatActivity() {
             holder.namaAdmin.text = admin.namaAdmin
             holder.tanggalLahir.text = admin.tanggalLahir
             holder.username.text = admin.username
+
+            // Set klik listener untuk item
+            holder.itemView.setOnClickListener {
+                onItemClick(admin)
+            }
         }
 
         override fun getItemCount(): Int = adminList.size
