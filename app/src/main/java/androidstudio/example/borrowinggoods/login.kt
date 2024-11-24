@@ -71,8 +71,7 @@ class login : AppCompatActivity() {
 
     private fun login_user(username: String, password: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response =
-                ApiHelper.getData("GET_login_user.php?username=$username&password=$password")
+            val response = ApiHelper.getData("GET_login_user.php?username=$username&password=$password")
             withContext(Dispatchers.Main) {
                 response?.let {
                     if (response.isNotEmpty()) {

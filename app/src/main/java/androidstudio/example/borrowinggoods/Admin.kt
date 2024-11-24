@@ -26,7 +26,7 @@ class Admin : AppCompatActivity() {
 
 
         val textView1 = findViewById<TextView>(R.id.textView1)
-        val textView2 = findViewById<TextView>(R.id.textView2)
+        val textView2 = findViewById<TextView>(R.id.textView90)
         val button1 = findViewById<Button>(R.id.button1)
         val button2 = findViewById<Button>(R.id.button2)
         val button3 = findViewById<Button>(R.id.button3)

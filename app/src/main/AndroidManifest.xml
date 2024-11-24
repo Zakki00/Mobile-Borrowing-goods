@@ -15,6 +15,12 @@
         android:theme="@style/Theme.BorrowingGoods"
         tools:targetApi="31">
         <activity
+            android:name=".Peminjaman"
+            android:exported="false" />
+        <activity
+            android:name=".admin_edit"
+            android:exported="false" />
+        <activity
             android:name=".admin_detail"
             android:exported="false" />
         <activity

@@ -27,7 +27,7 @@ class Profile : AppCompatActivity() {
 
         findViewById<TextView>(R.id.textView1).text = "Selamat Datang " + nama
         findViewById<TextView>(R.id.textView1).text = username
-          findViewById<TextView>(R.id.textView2).text = tanggal_lahir
+        findViewById<TextView>(R.id.textView90).text = tanggal_lahir
         val button1: Button = findViewById(R.id.button1)
         val button2: Button = findViewById(R.id.button2)
 
